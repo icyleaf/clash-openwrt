@@ -8,6 +8,8 @@ notifications:
 language: c
 compiler: gcc
 env:
+  global:
+  - PACKAGE=clash
   matrix:
   - SDK_URL=https://downloads.openwrt.org/releases/18.06.2/targets/x86/64/openwrt-sdk-18.06.2-x86-64_gcc-7.3.0_musl.Linux-x86_64.tar.xz
 install:
