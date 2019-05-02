@@ -1,0 +1,11 @@
+VERSION="18.06.2"
+TARGET="x86"
+SUBTARGET="64"
+
+# build from custom extra feed
+FEED_1="src-git extra https://github.com/tzhao11/clash-openwrt.git"
+FEED_1_PACKAGES="clash"
+
+#MENUCONFIG=1
+#DEBUG=1
+#DISABLE_SIGNING=1
