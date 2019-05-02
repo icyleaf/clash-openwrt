@@ -1,0 +1,43 @@
+sudo: false
+cache:
+  bundler: true
+  directories:
+  - cache/
+notifications:
+  email: false
+language: c
+compiler: gcc
+env:
+  matrix:
+  - SDK_URL=https://downloads.openwrt.org/releases/18.06.2/targets/x86/64/openwrt-sdk-18.06.2-x86-64_gcc-7.3.0_musl.Linux-x86_64.tar.xz
+install:
+- mkdir -p $TRAVIS_BUILD_DIR/local ; cd $TRAVIS_BUILD_DIR/local
+- wget "http://us.archive.ubuntu.com/ubuntu/pool/main/c/ccache/ccache_3.1.6-1_amd64.deb"
+- dpkg -x *.deb .
+- mkdir -p $TRAVIS_BUILD_DIR/cache ; cd $TRAVIS_BUILD_DIR/cache
+- wget -c $SDK_URL
+- mkdir -p $TRAVIS_BUILD_DIR/sdk ; cd $TRAVIS_BUILD_DIR/sdk
+- export FILE=$TRAVIS_BUILD_DIR/cache/$(basename $SDK_URL)
+- file $FILE
+- tar xjf $FILE
+- cd $TRAVIS_BUILD_DIR/sdk/OpenWrt-SDK-*
+- mkdir package/$PACKAGE
+- ln -s $TRAVIS_BUILD_DIR/Makefile package/$PACKAGE/
+- ln -s $TRAVIS_BUILD_DIR/src package/$PACKAGE/
+script:
+- export PATH=$TRAVIS_BUILD_DIR/local/usr/bin:$PATH
+- cd $TRAVIS_BUILD_DIR/sdk/OpenWrt-SDK-*
+- "./scripts/feeds update packages >/dev/null"
+- make V=s
+- find $TRAVIS_BUILD_DIR/sdk/OpenWrt-SDK-*/bin/
+- find . -name *.ipk -exec cp {} $TRAVIS_BUILD_DIR \;
+- cd $TRAVIS_BUILD_DIR/
+before_deploy: git fetch --tags
+deploy:
+  provider: releases
+  api_key:
+    secure: UfgiBn0RJBEC+MMJd7jF1LPYjtaqmgc2H1M3uru3DXUfLYvg2qTQWKaWK6UijkpV8K3IuposWPwzCOsdEyr0WmKcMiJZTiLu9oBvK9wXGlEhzH199v9ft3FjyiRHwPyUJ/c3un2R2IK9dbo3Ja9UJJpOe2DNWfr3SAUIGKJvkGS/WKBUZ10vRQr2QzIftgFiDfCfKE7E2oBLUUTTaw3n9ehsUKy1W7syN1jRJXlPO8Yxf8Fu4Rq2evY9NVIGJqAnEDwdRCfd70V3OQxC1B0P9byDotZUAnY+E7oC0I0pQJ0ywyYF+emEpk2TMQ9DREizhSRrqPqm0LhShnYp1tqSJvcMqEqhOdhdGY9pd4TMdENwXhPXC9Ngjlns92O+DkZNlX6fg0NlNUidUb6bYz0EwH6JRWAenAgoca8nUt2mE+wTBsW0oAMchYWK0+h4FGaBahnELCKSa4PO/R8OrbjSPLZlSoNOqtImugqz8zav7Pg3s7ffgHA42yz2Au725T/7wDolCVwmXLzR+OryNt09Dn1nHFMMuD3hN0u/uqE3Rz96OCHfI5+wDXuEZlblsSI8AbyWcjGY/dqHBmBXSL2FtTxZCB6LN44BWUIlkE++L3IFm0uFiF6jM/Vo04is83eo/7J/bX9Dg9wWxtMmmhWfAbO2KGs80tj0iKwG8whwpcU=
+  file: "$TRAVIS_BUILD_DIR/*.ipk"
+  skip_cleanup: true
+  #on:
+    #tags: true
