@@ -1,11 +1,8 @@
 sudo: false
-cache:
-  bundler: true
-  directories:
-  - cache/
 notifications:
   email: false
 language: c
+cache: ccache
 compiler: gcc
 env:
   global:
@@ -13,9 +10,6 @@ env:
   matrix:
   - SDK_URL=https://downloads.openwrt.org/releases/18.06.2/targets/x86/64/openwrt-sdk-18.06.2-x86-64_gcc-7.3.0_musl.Linux-x86_64.tar.xz
 install:
-- mkdir -p $TRAVIS_BUILD_DIR/local ; cd $TRAVIS_BUILD_DIR/local
-- wget "http://us.archive.ubuntu.com/ubuntu/pool/main/c/ccache/ccache_3.1.6-1_amd64.deb"
-- dpkg -x *.deb .
 - mkdir -p $TRAVIS_BUILD_DIR/cache ; cd $TRAVIS_BUILD_DIR/cache
 - wget -c $SDK_URL
 - mkdir -p $TRAVIS_BUILD_DIR/sdk ; cd $TRAVIS_BUILD_DIR/sdk
@@ -30,7 +24,7 @@ script:
 - export PATH=$TRAVIS_BUILD_DIR/local/usr/bin:$PATH
 - cd $TRAVIS_BUILD_DIR/sdk/openwrt-sdk-*
 - "./scripts/feeds update packages >/dev/null"
-- make V=s
+- make package/$PACKAGE V=s
 - find $TRAVIS_BUILD_DIR/sdk/openwrt-sdk-*/bin/
 - find . -name *.ipk -exec cp {} $TRAVIS_BUILD_DIR \;
 - cd $TRAVIS_BUILD_DIR/
