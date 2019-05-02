@@ -10,11 +10,11 @@ services:
 
 install:
   - curl -L https://github.com/Andy2244/openwrt-package-builder/archive/v1.0.2.tar.gz | tar xz
-  - cd openwrt-package-builder*
-  - chmod +x builder.sh
+  - mv openwrt-package-builder* builder
+  - chmod +x builder/builder.sh
 
 script:
-  - ./builder.sh build $TRAVIS_BUILD_DIR/config.txt
+  - bash builder/builder.sh build config.txt
 
 #before_deploy: git fetch --tags
 deploy:
