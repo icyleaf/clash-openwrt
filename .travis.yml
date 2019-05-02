@@ -24,7 +24,8 @@ script:
 - export PATH=$TRAVIS_BUILD_DIR/local/usr/bin:$PATH
 - cd $TRAVIS_BUILD_DIR/sdk/openwrt-sdk-*
 - "./scripts/feeds update packages >/dev/null"
-- make package/$PACKAGE V=s
+- make package/$PACKAGE/prepare V=s
+- make package/$PACKAGE/compile V=s
 - find $TRAVIS_BUILD_DIR/sdk/openwrt-sdk-*/bin/
 - find . -name *.ipk -exec cp {} $TRAVIS_BUILD_DIR \;
 - cd $TRAVIS_BUILD_DIR/
