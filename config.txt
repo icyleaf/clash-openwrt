@@ -3,7 +3,7 @@ TARGET="x86"
 SUBTARGET="64"
 
 # build from custom extra feed
-FEED_1="src-git extra https://github.com/tzhao11/clash-openwrt.git"
+FEED_1="src-git extra https://github.com/tzhao11/clash-openwrt.git;dev"
 FEED_1_PACKAGES="clash luci-app-clash"
 
 #MENUCONFIG=1
