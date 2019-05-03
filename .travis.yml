@@ -9,8 +9,9 @@ services:
   - docker
 
 env:
-  - BUILDER_URL=https://github.com/Andy2244/openwrt-package-builder/archive/v1.0.2.tar.gz
-  - DEPLOY_PATH=builder/bin-18.06.2-x86-64/bin/packages/x86_64/extra
+  global:
+    - BUILDER_URL=https://github.com/Andy2244/openwrt-package-builder/archive/v1.0.2.tar.gz
+    - DEPLOY_PATH=builder/bin-18.06.2-x86-64/bin/packages/x86_64/extra
 
 install:
   - curl -L $BUILDER_URL | tar xz
