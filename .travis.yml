@@ -23,7 +23,7 @@ script:
   - bash builder.sh build $TRAVIS_BUILD_DIR/config.txt
 
 before_deploy:
-  - cp $TRAVIS_BUILD_DIR/index.html $TRAVIS_BUILD_DIR/$DEPLOY_PATH/index.html
+  - sudo cp $TRAVIS_BUILD_DIR/index.html $TRAVIS_BUILD_DIR/$DEPLOY_PATH/index.html
 
 deploy:
   - provider: releases
