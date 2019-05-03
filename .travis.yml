@@ -16,7 +16,6 @@ install:
 script:
   - bash builder.sh build $TRAVIS_BUILD_DIR/config.txt
 
-#before_deploy: git fetch --tags
 deploy:
   provider: releases
   api_key:
@@ -24,5 +23,5 @@ deploy:
   file_glob: true
   file: "**/*clash*.ipk"
   skip_cleanup: true
-  #on:
-    #tags: true
+  on:
+    tags: true
