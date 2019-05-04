@@ -86,12 +86,12 @@ revert_dns() {
 }
 
 start_service() {
-	local enable=$(uci get clash.config.enabled 2>/dev/null)
+	local enabled=$(uci get clash.config.enabled 2>/dev/null)
 	local dns1=$(uci get flowoffload.@flow[0].dns 2>/dev/null)
 	local dns2=$(uci get sfe.config.dns 2>/dev/null)
 
 	# 启动 Clash
-	if [ $enable -eq 1 ]; then
+	if [ $enabled -eq 1 ]; then
 		if [ $dns1 -eq 1 ];  then
 			uci set flowoffload.@flow[0].dns=0
 			uci commit flowoffload
@@ -109,7 +109,7 @@ start_service() {
 
 		echo "enable"
 		#nohup $CLASH -d $CLASH_CONFIG > /tmp/clash.log 2>&1 &
-		procd_open_instance clash
+		procd_open_instance
 		procd_set_param command $CLASH -d $CLASH_CONFIG
 
 		# respawn automatically if something died, be careful if you have an alternative process supervisor
@@ -125,7 +125,8 @@ start_service() {
 		add_rule
 		change_dns
 		/etc/init.d/dnsmasq restart > /dev/null 2>&1
-
+	else
+		stop
 	fi
 	
 }
@@ -138,10 +139,13 @@ stop_service() {
 }
 
 reload_service(){
+	local enabled=$(uci get clash.config.enabled 2>/dev/null)
+
 	stop
-	sleep 2
-	start
-	echo "restarted."
+	if [ $enabled -eq 1 ]; then
+		sleep 2
+		start
+	fi
 }
 
 service_triggers()
