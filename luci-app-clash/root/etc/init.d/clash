@@ -122,7 +122,7 @@ start_service() {
 		procd_set_param pidfile /var/run/clash.pid # write a pid file on instance start and remote it on stop
 		procd_close_instance
 
-		if pidof clash >/dev/null; then
+		if [ -f /var/run/clash.pid ]; then
 			sleep 3
 			echo "clash以启动,加载规则"
 			add_rule
@@ -139,7 +139,7 @@ stop_service() {
 	del_rule
 	revert_dns
 	/etc/init.d/dnsmasq restart > /dev/null 2>&1
-	echo "stop!"
+	echo "clash stopped"
 }
 
 old_start() {

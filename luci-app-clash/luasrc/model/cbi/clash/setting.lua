@@ -6,7 +6,7 @@ local fs = require("nixio.fs")
 local trport = 9090
 local button = ""
 
-if luci.sys.call("pidof clash >/dev/null") == 0 then
+if luci.sys.call("[ -f /var/run/clash.pid ]") == 0 then
 	button = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"button\" value=\" " .. translate("Open Web Interface") .. " \" onclick=\"window.open('http://'+window.location.hostname+':" .. trport .. "')\"/>"
 	m = Map("clash", translate("clash"), "%s - %s" %{translate("clash"), translate("<strong><font color=\"green\">Running</font></strong>")})
 else
