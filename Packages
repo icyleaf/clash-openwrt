@@ -1,0 +1,22 @@
+Package: clash
+Version: 0.13.0
+Depends: libc
+Section: net
+Architecture: x86_64
+Installed-Size: 3399908
+Filename: clash_0.13.0_x86_64.ipk
+Size: 3393006
+SHA256sum: 576473f416748a4f12b1f54c80963418f3e7eb75da69b10ea6fe4fdcb20a39b4
+Description:  clash is a cross-platform proxy software
+
+Package: luci-app-clash
+Version: 1.06-1
+Depends: libc, clash
+Section: luci
+Architecture: all
+Installed-Size: 1926513
+Filename: luci-app-clash_1.06-1_all.ipk
+Size: 1756780
+SHA256sum: ddedce5a560eab5570de170922b69835ad14cdd86397ef19d5eaadfedc489064
+Description:  LuCI Support for clash
+
