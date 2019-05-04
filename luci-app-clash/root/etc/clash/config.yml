@@ -25,7 +25,7 @@ mode: Rule
 log-level: info
 
 # clash 的 RESTful API
-external-controller: 127.0.0.1:9090
+external-controller: 0.0.0.0:9090
 
 # 您可以将静态网页资源（如 clash-dashboard）放置在一个目录中，clash 将会服务于 `${API}/ui`
 # 参数应填写配置目录的相对路径或绝对路径。
@@ -37,7 +37,7 @@ secret: ""
 dns:
   enable: true
   ipv6: false
-  listen: 0.0.0.0:53
+  listen: 127.0.0.1:5858
   enhanced-mode: redir-host
   nameserver:
      - 1.2.4.8
