@@ -122,15 +122,10 @@ start_service() {
 		procd_set_param pidfile /var/run/clash.pid # write a pid file on instance start and remote it on stop
 		procd_close_instance
 
-		if [ -f /var/run/clash.pid ]; then
-			sleep 3
-			echo "clash以启动,加载规则"
-			add_rule
-			change_dns
-			/etc/init.d/dnsmasq restart > /dev/null 2>&1
-		else
-			echo "clash无法启动"
-		fi
+		add_rule
+		change_dns
+		/etc/init.d/dnsmasq restart > /dev/null 2>&1
+
 	fi
 	
 }
@@ -140,68 +135,6 @@ stop_service() {
 	revert_dns
 	/etc/init.d/dnsmasq restart > /dev/null 2>&1
 	echo "clash stopped"
-}
-
-old_start() {
-	local enable=$(uci get clash.config.enabled 2>/dev/null)
-	local dns1=$(uci get flowoffload.@flow[0].dns 2>/dev/null)
-	local dns2=$(uci get sfe.config.dns 2>/dev/null)
-	# 启动 Clash
-	if [ $enable -eq 1 ]; then
-		kill -9 $(ps | grep clash-watchdog.sh | grep -v "grep" | awk '{print $1}') >/dev/null 2>&1
-		if [ $dns1 -eq 1 ];  then
-			uci set flowoffload.@flow[0].dns=0
-			uci commit flowoffload
-			/etc/init.d/flowoffload restart > /dev/null 2>&1
-			sleep 2
-		fi
-		if [ $dns2 -eq 1 ];  then
-			uci set sfe.@config[0].dns=0
-			uci commit sfe
-			/etc/init.d/sfe restart > /dev/null 2>&1
-			sleep 2
-		fi
-		del_rule
-		revert_dns
-
-		if pidof clash >/dev/null; then
-			kill $(pidof clash) >/dev/null 2>&1 || kill -9 clash >/dev/null 2>&1
-			sleep 2
-		fi
-
-		echo "enable"
-		nohup $CLASH -d $CLASH_CONFIG > /tmp/clash.log 2>&1 &
-
-		if pidof clash >/dev/null; then
-			sleep 3
-			echo "clash以启动,加载规则"
-			add_rule
-			change_dns
-			/etc/init.d/dnsmasq restart > /dev/null 2>&1
-			#if [ usr/bin/clash ] ;then
-				#[ -z "$(grep -w "/usr/share/clash/clash_update.sh" /etc/crontabs/root)" ] && echo "0 4 * * * /usr/share/clash/clash_update.sh" >> /etc/crontabs/root
-				#crontab /etc/crontabs/root
-			#fi
-			nohup /usr/share/clash/clash-watchdog.sh > /var/log/clash-watchdog.file 2>&1 &
-		else
-			echo "clash无法启动"
-		fi
-	fi
-}
-
-old_stop() {
-	kill -9 $(ps | grep clash-watchdog.sh | grep -v "grep" | awk '{print $1}') >/dev/null 2>&1
-	if pidof clash >/dev/null; then
-		# 关闭 Clash
-		kill $(pidof clash) >/dev/null 2>&1 || kill -9 clash >/dev/null 2>&1
-		del_rule
-		revert_dns
-		/etc/init.d/dnsmasq restart > /dev/null 2>&1
-		sed -i '/clash_update/d' /etc/crontabs/root
-		/etc/init.d/cron restart > /dev/null 2>&1
-		echo "stop!"
-	fi
-
 }
 
 reload_service(){
