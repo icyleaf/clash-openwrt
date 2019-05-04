@@ -1,5 +1,6 @@
 #!/bin/sh /etc/rc.common
-# Copyright (C) 2009-2010 OpenWrt.org
+
+USE_PROCD=1
 
 START=99
 STOP=15
@@ -113,7 +114,7 @@ start_service() {
 
 		# respawn automatically if something died, be careful if you have an alternative process supervisor
 		# if process dies sooner than respawn_threshold, it is considered crashed and after 5 retries the service is stopped
-		#procd_set_param respawn ${respawn_threshold:-3600} ${respawn_timeout:-5} ${respawn_retry:-5}
+		procd_set_param respawn
 
 		procd_set_param file $CLASH_CONFIG/config.yml # /etc/init.d/your_service reload will restart the daemon if these files have changed
 		procd_set_param stdout 1 # forward stdout of the command to logd
