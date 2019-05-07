@@ -1,3 +1,4 @@
 [submodule "submodules/lede"]
 	path = submodules/lede
 	url = https://github.com/505575853/lede.git
+  branch = R9
