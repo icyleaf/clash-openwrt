@@ -18,8 +18,7 @@ script:
 
 deploy:
   provider: releases
-  api_key:
-    secure: UfgiBn0RJBEC+MMJd7jF1LPYjtaqmgc2H1M3uru3DXUfLYvg2qTQWKaWK6UijkpV8K3IuposWPwzCOsdEyr0WmKcMiJZTiLu9oBvK9wXGlEhzH199v9ft3FjyiRHwPyUJ/c3un2R2IK9dbo3Ja9UJJpOe2DNWfr3SAUIGKJvkGS/WKBUZ10vRQr2QzIftgFiDfCfKE7E2oBLUUTTaw3n9ehsUKy1W7syN1jRJXlPO8Yxf8Fu4Rq2evY9NVIGJqAnEDwdRCfd70V3OQxC1B0P9byDotZUAnY+E7oC0I0pQJ0ywyYF+emEpk2TMQ9DREizhSRrqPqm0LhShnYp1tqSJvcMqEqhOdhdGY9pd4TMdENwXhPXC9Ngjlns92O+DkZNlX6fg0NlNUidUb6bYz0EwH6JRWAenAgoca8nUt2mE+wTBsW0oAMchYWK0+h4FGaBahnELCKSa4PO/R8OrbjSPLZlSoNOqtImugqz8zav7Pg3s7ffgHA42yz2Au725T/7wDolCVwmXLzR+OryNt09Dn1nHFMMuD3hN0u/uqE3Rz96OCHfI5+wDXuEZlblsSI8AbyWcjGY/dqHBmBXSL2FtTxZCB6LN44BWUIlkE++L3IFm0uFiF6jM/Vo04is83eo/7J/bX9Dg9wWxtMmmhWfAbO2KGs80tj0iKwG8whwpcU=
+  api_key: $GITHUB_OAUTH_TOKEN
   file_glob: true
   file: "**/*clash*.ipk"
   skip_cleanup: true
